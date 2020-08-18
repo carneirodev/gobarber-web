@@ -1,15 +1,21 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+interface ContainerProps {
+  isFocused: boolean;
+  isFilled: boolean;
+}
+export const Container = styled.div<ContainerProps>`
   background: #232129;
   border-radius: 10px;
-  border: 2px solid #232129;
   padding: 16px;
   width: 100%;
   display: flex;
   align-items: center;
+
+  border: 2px solid #232129;
   color: #666360;
 
+  transition: border-color 0.2s, color 0.2s;
   input {
     background: transparent;
     flex: 1;
@@ -22,7 +28,20 @@ export const Container = styled.div`
   & + div {
     margin-top: 8px;
   }
+
+  ${props =>
+    props.isFocused &&
+    css`
+      color: #ff9000;
+      border-color: #ff9000;
+    `}
+
   svg {
     margin-right: 16px;
+    ${props =>
+      props.isFilled &&
+      css`
+        color: #ff9000;
+      `}
   }
 `;
