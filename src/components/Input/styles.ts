@@ -43,8 +43,17 @@ export const Container = styled.div<ContainerProps>`
     `}
 
 
+
+
   svg {
     margin-right: 16px;
+
+    ${props =>
+      props.isFilled &&
+      css`
+        color: #ff9000;
+        border-color: #ff9000;
+      `}
   }
 `;
 
