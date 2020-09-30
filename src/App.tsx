@@ -4,14 +4,15 @@ import GlobalStyle from './styles/global';
 import SignIn from './pages/SingIn';
 // import SignUp from './pages/SingUp';
 
-import { AuthProvider } from './context/AuthContext';
+import AppProvider from './hooks';
 
 function App() {
   return (
     <>
-      <AuthProvider>
+      <AppProvider>
         <SignIn />
-      </AuthProvider>
+      </AppProvider>
+
       <GlobalStyle />
     </>
   );

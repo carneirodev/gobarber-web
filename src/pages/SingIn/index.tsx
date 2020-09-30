@@ -5,8 +5,8 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 import logoImg from '../../assets/logo.svg';
 
-import { useAuth } from '../../context/AuthContext';
-
+import { useAuth } from '../../hooks/Auth';
+import { useToast } from '../../hooks/Toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import Input from '../../components/Input';
@@ -22,6 +22,7 @@ interface SignInFormData {
 const SingIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { singIn } = useAuth();
+  const { addToast } = useToast();
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
       try {
@@ -35,17 +36,23 @@ const SingIn: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
-        singIn({
+        await singIn({
           email: data.email,
           password: data.password,
         });
       } catch (err) {
-        const errors = getValidationErrors(err);
-
-        formRef.current?.setErrors(errors);
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+        }
+        addToast({
+          type: 'info',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, chegue as credenciais',
+        });
       }
     },
-    [singIn],
+    [singIn, addToast],
   );
 
   return (
